@@ -4,10 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: "",
-    loadChildren: () => 
-    import('./interview/interview-routing.module')
-    .then(mod => mod.InterviewRoutingModule)
-  }
+      loadChildren: () => 
+      import('./interviews/interviews-routing.module')
+      .then(mod => mod.InterviewsRoutingModule)
+  },
+  {
+    path: "form",
+      loadChildren: () => 
+      import('./interviewform/interviewform-routing.module')
+      .then(mod => mod.InterviewformRoutingModule)
+  },
 ];
 
 @NgModule({
