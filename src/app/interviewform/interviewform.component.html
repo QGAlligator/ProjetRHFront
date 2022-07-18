@@ -1,8 +1,13 @@
 <div class="form-container">
     <form >
-        <input type="text" placeholder="Nom">
-        <br>
-        <input type="text" placeholder="Prénom">
+        <div class="mb-3">
+            <label for="candidatName" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="candidatName" placeholder="Doe">
+        </div>
+        <div class="mb-3">
+            <label for="candidatFirstName" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="candidatFirstName" placeholder="John">
+        </div>
         <br>
         <select>
             <option value="EC">En Cours</option>
@@ -10,8 +15,13 @@
             <option value="RN">Réponse Négative</option>
         </select>
         <br>
-        <input type="text" placeholder="Compte Rendu">
-        <br>
-        <input type="text" placeholder="Date de l'entretien">
+        <div class="mb-3">
+            <label for="compteRendu" class="form-label">Compte Rendu</label>
+            <textarea class="form-control" id="compteRendu" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date de l'entretien</label>
+            <input type="date" class="form-control" id="date">
+        </div>
     </form>    
 </div>
