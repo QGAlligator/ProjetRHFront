@@ -1,51 +1,34 @@
-<div class="card" style="width: 115rem;">
-    <button class="btn btn-primary" (click)='nav()'>Ajouter un candidat</button>
-    <div class="form-container">  
-      <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Statut</th>
-                <th scope="col">Comptre Rendu</th>
-                <th scope="col">Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td scope="row">Doe</td>
-                <td>John</td>
-                <td>En Cours</td>
-                <td>A compléter</td>
-                <td>26/09/2022</td>
-                <td>
-                    <button type="button" class="btn btn-success">Modifier</button>
-                    <button type="button" class="btn btn-danger">Supprimer</button>
-                </td>
-            </tr>
-            <tr>
-                <td scope="row">Toto</td>
-                <td>Toto</td>
-                <td>Réponse Positive</td>
-                <td>Sérieux, aimable et curieux</td>
-                <td>14/01/2021</td>
-                <td>
-                    <button type="button" class="btn btn-success">Modifier</button>
-                    <button type="button" class="btn btn-danger">Supprimer</button>
-                </td>
-            </tr>
-            <tr>
-                <td scope="row">EscortDuBar</td>
-                <td>Pablo</td>
-                <td>Réponse Négative</td>
-                <td>Arrive en retard et n'est pas très poli</td>
-                <td>08/12/2020</td>
-                <td>
-                    <button type="button" class="btn btn-success">Modifier</button>
-                    <button type="button" class="btn btn-danger">Supprimer</button>
-                </td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-</div>   
+<div class="container">
+  <button class="btn btn-primary" [routerLink]="['/', 'form']">
+    Ajouter un candidat
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Statut</th>
+        <th scope="col">Compte Rendu</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let candidat of candidats$ | async">
+        <td scope="row">{{ candidat.name }}</td>
+        <td>{{ candidat.firstname }}</td>
+        <td>{{ candidat.statut }}</td>
+        <td>{{ candidat.desc }}</td>
+        <td>{{ candidat.date }}</td>
+        <td>
+          <a
+            type="button"
+            class="btn btn-success me-2"
+            [routerLink]="['/', 'form', candidat.id]"
+            >Modifier</a
+          >
+          <button type="button" class="btn btn-danger">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

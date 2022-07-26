@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'prh-interviewform',
@@ -8,12 +8,10 @@ import { Router } from '@angular/router';
 })
 export class InterviewformComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  goback(){
-    this.router.navigate([ '/' ])
- }
+
 }

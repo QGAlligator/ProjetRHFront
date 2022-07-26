@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { CandidatsService } from '../services/candidats.service';
 
 @Component({
   selector: 'prh-interviews',
   templateUrl: './interviews.component.html',
-  styleUrls: ['./interviews.component.scss']
+  styleUrls: ['./interviews.component.scss'],
 })
 export class InterviewsComponent implements OnInit {
-
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
+  public candidats$: Observable<any>;
+  constructor(private candidatsService: CandidatsService) {
+    this.candidats$ = this.candidatsService.candidats$;
   }
 
-  nav(){
-    this.router.navigate([ '/form' ])
- }
+  ngOnInit(): void {}
 }

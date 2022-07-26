@@ -3,21 +3,23 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "",
-      loadChildren: () => 
-      import('./interviews/interviews-routing.module')
-      .then(mod => mod.InterviewsRoutingModule)
+    path: '',
+    loadChildren: () =>
+      import('./interviews/interviews.module').then(
+        (mod) => mod.InterviewsModule
+      ),
   },
   {
-    path: "form",
-      loadChildren: () => 
-      import('./interviewform/interviewform-routing.module')
-      .then(mod => mod.InterviewformRoutingModule)
+    path: 'form',
+    loadChildren: () =>
+      import('./interviewform/interviewform.module').then(
+        (mod) => mod.InterviewformModule
+      ),
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,4 +1,4 @@
-<div class="card" style="width: 115rem;">
+<div class="container">
     <div class="form-container">
         <form >
             <div class="mb-3">
@@ -25,8 +25,11 @@
                 <label for="date" class="form-label">Date de l'entretien</label>
                 <input type="date" class="form-control" id="date">
             </div>
-            <button type="submit" class="btn btn-primary">Ajouter</button>
-            <button class="btn btn-danger" (click)="goback()">Annuler</button>
+            <div>
+                <button type="submit" class="btn btn-primary me-2">Ajouter</button>
+                <a class="btn btn-danger" [routerLink]="['../']">Annuler</a>
+
+            </div>
         </form>    
     </div>
 </div>
