@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-4">
   <button class="btn btn-primary" [routerLink]="['/', 'form']">
     Ajouter un candidat
   </button>
@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let candidat of candidats$ | async">
+      <tr *ngFor="let candidat of candidats">
         <td scope="row">{{ candidat.name }}</td>
         <td>{{ candidat.firstname }}</td>
         <td>{{ candidat.statut }}</td>

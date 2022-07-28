@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { map, Subject, takeUntil } from 'rxjs';
+// import { Observable, of } from 'rxjs';
 import { CandidatsService } from '../services/candidats.service';
 
 @Component({
@@ -7,11 +8,30 @@ import { CandidatsService } from '../services/candidats.service';
   templateUrl: './interviews.component.html',
   styleUrls: ['./interviews.component.scss'],
 })
-export class InterviewsComponent implements OnInit {
-  public candidats$: Observable<any>;
+export class InterviewsComponent implements OnInit, OnDestroy {
+  public candidats: any[] = [];
+  private destroy$: Subject<void> = new Subject();
+  // public candidats$: Observable<any>;
+
   constructor(private candidatsService: CandidatsService) {
-    this.candidats$ = this.candidatsService.candidats$;
+    // this.candidats$ = this.candidatsService.candidats$;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.candidatsService.candidats$
+      .pipe(
+        map((candidats) => (this.candidats = candidats)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        complete: () => {
+          console.log('Jai fini');
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

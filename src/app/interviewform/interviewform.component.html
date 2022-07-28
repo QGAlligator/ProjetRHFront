@@ -1,35 +1,61 @@
 <div class="container">
-    <div class="form-container">
-        <form >
-            <div class="mb-3">
-                <label for="candidatName" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="candidatName" placeholder="Doe">
-            </div>
-            <div class="mb-3">
-                <label for="candidatFirstName" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="candidatFirstName" placeholder="John">
-            </div>
-            <div class="mb-3">
-                <label for="statut" class="form-label">Statut</label>
-                <select class="form-select" id="statut" aria-label="Default select example">
-                    <option value="EC">En Cours</option>
-                    <option value="RP">Réponse Positive</option>
-                    <option value="RN">Réponse Négative</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="compteRendu" class="form-label">Compte Rendu</label>
-                <textarea class="form-control" id="compteRendu" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Date de l'entretien</label>
-                <input type="date" class="form-control" id="date">
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary me-2">Ajouter</button>
-                <a class="btn btn-danger" [routerLink]="['../']">Annuler</a>
-
-            </div>
-        </form>    
-    </div>
+  <div class="form-container">
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="candidatName" class="form-label">Nom</label>
+        <input
+          type="text"
+          class="form-control"
+          id="candidatName"
+          placeholder="Doe"
+          formControlName="name"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="candidatFirstName" class="form-label">Prénom</label>
+        <input
+          type="text"
+          class="form-control"
+          id="candidatFirstName"
+          placeholder="John"
+          formControlName="firstName"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="statut" class="form-label">Statut</label>
+        <select
+          class="form-select"
+          id="statut"
+          aria-label="Default select example"
+          formControlName="statut"
+        >
+          <option value="EC">En Cours</option>
+          <option value="RP">Réponse Positive</option>
+          <option value="RN">Réponse Négative</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="compteRendu" class="form-label">Compte Rendu</label>
+        <textarea
+          class="form-control"
+          id="compteRendu"
+          rows="3"
+          formControlName="desc"
+        ></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Date de l'entretien</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          formControlName="date"
+        />
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary me-2">Ajouter</button>
+        <a class="btn btn-danger" [routerLink]="['../']">Annuler</a>
+      </div>
+    </form>
+  </div>
 </div>
