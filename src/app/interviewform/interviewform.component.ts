@@ -28,14 +28,11 @@ export class InterviewformComponent implements OnInit, OnDestroy {
       ]),
       statut: new FormControl('', [Validators.required]),
       desc: new FormControl('', [Validators.maxLength(4000)]),
-      date: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(12),
-      ]),
+      date: new FormControl('', [Validators.required]),
     });
     this.form.valueChanges
       .pipe(
-        tap((value) => console.log(value)),
+        tap((value) => console.log(this.form)),
         takeUntil(this.destroy$)
       )
       .subscribe();

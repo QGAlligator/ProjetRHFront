@@ -10,6 +10,16 @@
           placeholder="Doe"
           formControlName="name"
         />
+        <small *ngIf="form.get('name')?.errors?.['minlength']"
+          >Le nom doit faire minimum
+          {{form.get('name')?.errors?.['minlength'].requiredLength}}
+          caractères.</small
+        >
+        <small *ngIf="form.get('name')?.errors?.['maxlength']"
+          >Le nom doit faire minimum
+          {{form.get('name')?.errors?.['maxlength'].requiredLength}}
+          caractères. ({{form.get('name')?.errors?.['maxlength'].actualLength}})
+        </small>
       </div>
       <div class="mb-3">
         <label for="candidatFirstName" class="form-label">Prénom</label>
@@ -20,6 +30,17 @@
           placeholder="John"
           formControlName="firstName"
         />
+        <small *ngIf="form.get('firstName')?.errors?.['minlength']"
+          >Le prénom doit faire minimum
+          {{form.get('firstName')?.errors?.['minlength'].requiredLength}}
+          caractères.</small
+        >
+        <small *ngIf="form.get('firstName')?.errors?.['maxlength']"
+          >Le prénom doit faire minimum
+          {{form.get('firstName')?.errors?.['maxlength'].requiredLength}}
+          caractères. ({{form.get('firstName')?.errors?.['maxlength'].actualLength
+          }})
+        </small>
       </div>
       <div class="mb-3">
         <label for="statut" class="form-label">Statut</label>
@@ -42,6 +63,7 @@
           rows="3"
           formControlName="desc"
         ></textarea>
+        <small>{{ form.value?.desc?.length }}/4000</small>
       </div>
       <div class="mb-3">
         <label for="date" class="form-label">Date de l'entretien</label>
@@ -53,7 +75,13 @@
         />
       </div>
       <div>
-        <button type="submit" class="btn btn-primary me-2">Ajouter</button>
+        <button
+          type="submit"
+          class="btn btn-primary me-2"
+          [disabled]="!form.valid"
+        >
+          Ajouter
+        </button>
         <a class="btn btn-danger" [routerLink]="['../']">Annuler</a>
       </div>
     </form>
