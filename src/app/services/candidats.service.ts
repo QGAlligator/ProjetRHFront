@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
+import { Candidat } from '../models/candidat.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CandidatsService {
-
-  public candidats$: Observable <any[]> = of([
+  public candidats$: Candidat[] = [
     {
       id: 1,
       name: 'Doe',
       firstname: 'John',
       statut: 'En Cours',
       desc: 'A compléter',
-      date: '26/09/2022'                
+      date: new Date('09-26-2022'),
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ export class CandidatsService {
       firstname: 'Toto',
       statut: 'Réponse Positive',
       desc: 'Sérieux, aimable et curieux',
-      date: '14/01/2021'                
+      date: new Date('01-14-2021'),
     },
     {
       id: 3,
@@ -29,10 +29,11 @@ export class CandidatsService {
       firstname: 'Pablo',
       statut: 'Réponse Négative',
       desc: "Arrive en retard et n'est pas très poli",
-      date: '08/12/2020'                
+      date: new Date('12-08-2020'),
     },
-  ]);
-  
+  ];
 
-  constructor() { }
+  constructor() {}
+
+  public getCandidats$(): Observable<>;
 }

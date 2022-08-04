@@ -2,50 +2,92 @@
   <div class="form-container">
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <label for="candidatName" class="form-label">Nom</label>
+        <label
+          for="candidatName"
+          class="form-label"
+          [class.text-danger]="
+            getControlStatus('name', ['minlength', 'maxlength', 'required'])
+          "
+          >Nom*
+        </label>
         <input
           type="text"
           class="form-control"
+          [class.form-invalid]="
+            getControlStatus('name', ['minlength', 'maxlength', 'required'])
+          "
           id="candidatName"
           placeholder="Doe"
           formControlName="name"
         />
-        <small *ngIf="form.get('name')?.errors?.['minlength']"
+        <small
+          *ngIf="getControlStatus('name', ['minlength'])"
+          class="text-danger"
           >Le nom doit faire minimum
           {{form.get('name')?.errors?.['minlength'].requiredLength}}
           caractères.</small
         >
-        <small *ngIf="form.get('name')?.errors?.['maxlength']"
+        <small
+          *ngIf="getControlStatus('name', ['maxlength'])"
+          class="text-danger"
           >Le nom doit faire minimum
           {{form.get('name')?.errors?.['maxlength'].requiredLength}}
           caractères. ({{form.get('name')?.errors?.['maxlength'].actualLength}})
         </small>
       </div>
       <div class="mb-3">
-        <label for="candidatFirstName" class="form-label">Prénom</label>
+        <label
+          for="candidatFirstName"
+          class="form-label"
+          [class.text-danger]="
+            getControlStatus('firstName', [
+              'minlength',
+              'maxlength',
+              'required'
+            ])
+          "
+          >Prénom*
+        </label>
         <input
           type="text"
           class="form-control"
+          [class.form-invalid]="
+            getControlStatus('firstName', [
+              'minlength',
+              'maxlength',
+              'required'
+            ])
+          "
           id="candidatFirstName"
           placeholder="John"
           formControlName="firstName"
         />
-        <small *ngIf="form.get('firstName')?.errors?.['minlength']"
+        <small
+          *ngIf="getControlStatus('firstName', ['minlength'])"
+          class="text-danger"
           >Le prénom doit faire minimum
           {{form.get('firstName')?.errors?.['minlength'].requiredLength}}
           caractères.</small
         >
-        <small *ngIf="form.get('firstName')?.errors?.['maxlength']"
-          >Le prénom doit faire minimum
+        <small
+          *ngIf="getControlStatus('firstName', ['maxlength'])"
+          class="text-danger"
+          >Le prénom doit faire maximum
           {{form.get('firstName')?.errors?.['maxlength'].requiredLength}}
-          caractères. ({{form.get('firstName')?.errors?.['maxlength'].actualLength
-          }})
+          caractères. ({{form.get('firstName')?.errors?.['maxlength'].actualLength}}
+          )
         </small>
       </div>
       <div class="mb-3">
-        <label for="statut" class="form-label">Statut</label>
+        <label
+          for="statut"
+          class="form-label"
+          [class.text-danger]="getControlStatus('statut', ['required'])"
+          >Statut*
+        </label>
         <select
           class="form-select"
+          [class.form-invalid]="getControlStatus('status', ['required'])"
           id="statut"
           aria-label="Default select example"
           formControlName="statut"
@@ -56,20 +98,34 @@
         </select>
       </div>
       <div class="mb-3">
-        <label for="compteRendu" class="form-label">Compte Rendu</label>
+        <label
+          for="compteRendu"
+          class="form-label"
+          [class.text-danger]="getControlStatus('desc', ['maxlength'])"
+          >Compte Rendu
+        </label>
         <textarea
           class="form-control"
+          [class.form-invalid]="getControlStatus('desc', ['maxlength'])"
           id="compteRendu"
-          rows="3"
+          rows="5"
           formControlName="desc"
         ></textarea>
-        <small>{{ form.value?.desc?.length }}/4000</small>
+        <small [class.text-danger]="getControlStatus('desc', ['maxlength'])"
+          >{{ form.value?.desc?.length }}/4000
+        </small>
       </div>
       <div class="mb-3">
-        <label for="date" class="form-label">Date de l'entretien</label>
+        <label
+          for="date"
+          class="form-label"
+          [class.text-danger]="getControlStatus('date', ['required'])"
+          >Date de l'entretien*
+        </label>
         <input
           type="date"
-          class="form-control"
+          class="form-control form-date"
+          [class.form-invalid]="getControlStatus('date', ['required'])"
           id="date"
           formControlName="date"
         />
@@ -82,7 +138,7 @@
         >
           Ajouter
         </button>
-        <a class="btn btn-danger" [routerLink]="['../']">Annuler</a>
+        <a class="btn btn-danger" [routerLink]="['/']">Annuler</a>
       </div>
     </form>
   </div>

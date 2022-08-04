@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'prh-interviewform',
@@ -12,9 +12,43 @@ export class InterviewformComponent implements OnInit, OnDestroy {
 
   form?: FormGroup;
 
+  public get nameControl() {
+    return this.form?.get('name');
+  }
+
   constructor() {}
 
   ngOnInit(): void {
+    this.initForm$()
+      .pipe(
+        tap((value) => console.log(this.form)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  public getControlStatus(controlName: string, errorName: string[]): boolean {
+    let iserror: boolean = false;
+    for (let i = 0; i <= errorName.length; i++) {
+      if (this.form?.get(controlName)?.errors?.[errorName[i]]) {
+        iserror = true;
+      }
+    }
+    return (
+      iserror &&
+      !!(
+        this.form?.get(controlName)?.dirty ||
+        this.form?.get(controlName)?.touched
+      )
+    );
+  }
+
+  public onSubmit(): void {
+    console.log('form >>>', this.form);
+    console.log('isValid >>>', this.form?.valid);
+  }
+
+  private initForm$(): Observable<any> {
     this.form = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -30,17 +64,7 @@ export class InterviewformComponent implements OnInit, OnDestroy {
       desc: new FormControl('', [Validators.maxLength(4000)]),
       date: new FormControl('', [Validators.required]),
     });
-    this.form.valueChanges
-      .pipe(
-        tap((value) => console.log(this.form)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
-  public onSubmit(): void {
-    console.log('form >>>', this.form);
-    console.log('isValid >>>', this.form?.valid);
+    return this.form.valueChanges;
   }
 
   ngOnDestroy(): void {
