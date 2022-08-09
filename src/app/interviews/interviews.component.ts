@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { map, Subject, takeUntil } from 'rxjs';
+import { Candidat } from '../models/candidat.model';
 // import { Observable, of } from 'rxjs';
 import { CandidatsService } from '../services/candidats.service';
 
@@ -9,7 +10,7 @@ import { CandidatsService } from '../services/candidats.service';
   styleUrls: ['./interviews.component.scss'],
 })
 export class InterviewsComponent implements OnInit, OnDestroy {
-  public candidats: any[] = [];
+  public candidats: Candidat[] = [];
   private destroy$: Subject<void> = new Subject();
   // public candidats$: Observable<any>;
 
@@ -19,9 +20,9 @@ export class InterviewsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.candidatsService
-      .getCandidats$()
+      .getCandidat$()
       .pipe(
-        map((candidats) => (this.candidats = candidats)),
+        map((candidats: Candidat[]) => (this.candidats = candidats)),
         takeUntil(this.destroy$)
       )
       .subscribe({

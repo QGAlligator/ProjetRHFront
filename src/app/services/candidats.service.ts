@@ -36,7 +36,7 @@ export class CandidatsService {
 
   constructor(protected httpclient: HttpClient) {}
 
-  public getCandidats$(): Observable<Candidat[]> {
+  public getCandidat$(): Observable<Candidat[]> {
     //return this.httpclient.get('/candidats')
     return of(this.candidats$).pipe(
       map((candidats: any) =>
