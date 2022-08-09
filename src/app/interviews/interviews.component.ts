@@ -18,7 +18,8 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.candidatsService.candidats$
+    this.candidatsService
+      .getCandidats$()
       .pipe(
         map((candidats) => (this.candidats = candidats)),
         takeUntil(this.destroy$)

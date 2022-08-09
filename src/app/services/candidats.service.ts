@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { of, Observable, map } from 'rxjs';
 import { Candidat } from '../models/candidat.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,14 @@ export class CandidatsService {
     },
   ];
 
-  constructor() {}
+  constructor(protected httpclient: HttpClient) {}
 
-  public getCandidats$(): Observable<>;
+  public getCandidats$(): Observable<Candidat[]> {
+    //return this.httpclient.get('/candidats')
+    return of(this.candidats$).pipe(
+      map((candidats: any) =>
+        candidats.map((candidat: any): Candidat => candidat as Candidat)
+      )
+    );
+  }
 }
