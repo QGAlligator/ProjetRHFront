@@ -1,27 +1,19 @@
-input.ng-invalid.ng-touched.ng-dirty {
-  border: red 2px solid;
-}
-
 input.ng-valid.ng-touched.ng-dirty {
   border: lime 2px solid;
-}
-
-select.ng-invalid.ng-touched {
-  border: red 2px solid;
 }
 
 select.ng-valid.ng-touched.ng-dirty {
   border: lime 2px solid;
 }
 
-textarea.ng-invalid.ng-touched.ng-dirty {
-  border: red 2px solid;
-}
-
 textarea.ng-valid.ng-touched.ng-dirty {
   border: lime 2px solid;
 }
 
-.form-date.ng-invalid.ng-touched {
+.form-invalid {
+  border: red 2px solid !important;
+}
+
+select.ng-invalid.ng-touched {
   border: red 2px solid !important;
 }
