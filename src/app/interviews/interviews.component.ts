@@ -11,35 +11,28 @@ import { MarvelService } from '../services/marvel.service';
   styleUrls: ['./interviews.component.scss'],
 })
 export class InterviewsComponent implements OnInit, OnDestroy {
-  public candidats: Candidat[] = [];
   public heros: any[] = [];
+  public offset: number = 0;
+  public limit: number = 20;
+  public total: number = 0;
   private destroy$: Subject<void> = new Subject();
-  // public candidats$: Observable<any>;
 
-  constructor(
-    private candidatsService: CandidatsService,
-    private marvelService: MarvelService
-  ) {
-    // this.candidats$ = this.candidatsService.candidats$;
-  }
+  constructor(private marvelService: MarvelService) {}
 
   ngOnInit(): void {
-    this.candidatsService
-      .getCandidat$()
-      .pipe(
-        map((candidats: Candidat[]) => (this.candidats = candidats)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        complete: () => {
-          console.log('Jai fini');
-        },
-      });
+    this.getHero();
+  }
 
+  public getHero() {
     this.marvelService
       .getHero$()
       .pipe(
-        map((heros: any[]) => (this.heros = heros)),
+        map((data: any) => {
+          this.total = data.total;
+          this.offset = data.offset;
+          this.limit = data.limit;
+          this.heros = data.results;
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe({

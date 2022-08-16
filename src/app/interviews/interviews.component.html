@@ -2,33 +2,42 @@
   <button class="btn btn-primary" [routerLink]="['/', 'form']">
     Ajouter un candidat
   </button>
+  <button class="btn btn-primary" (click)="getHero()">Test Marvel</button>
   <table class="table">
     <thead>
       <tr>
+        <th scope="col">Image</th>
         <th scope="col">Nom</th>
-        <th scope="col">Prénom</th>
-        <th scope="col">Statut</th>
-        <th scope="col">Compte Rendu</th>
-        <th scope="col">Date</th>
+        <th scope="col">Descrition</th>
+        <th scope="col">Modifié</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let candidat of candidats">
-        <td scope="row">{{ candidat.name }}</td>
-        <td>{{ candidat.firstname }}</td>
-        <td>{{ candidat.statut }}</td>
-        <td>{{ candidat.desc }}</td>
-        <td>{{ candidat.date }}</td>
-        <td>
-          <a
-            type="button"
-            class="btn btn-success me-2"
-            [routerLink]="['/', 'form', candidat.id]"
-            >Modifier</a
-          >
-          <button type="button" class="btn btn-danger">Supprimer</button>
+      <tr *ngFor="let hero of heros">
+        <td scope="row">
+          <img
+            src="{{
+              hero.thumbnail.path +
+                '/standard_medium.' +
+                hero.thumbnail.extension
+            }}"
+            width="100%"
+            alt="Some Issue Loading Image..."
+          />
         </td>
+        <td>{{ hero.name }}</td>
+        <td>{{ hero.description }}</td>
+        <td>{{ hero.modified | date: "medium":"FR-fr" }}</td>
       </tr>
     </tbody>
   </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav>
 </div>
