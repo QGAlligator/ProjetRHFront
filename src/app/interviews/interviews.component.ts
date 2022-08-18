@@ -13,19 +13,20 @@ import { MarvelService } from '../services/marvel.service';
 export class InterviewsComponent implements OnInit, OnDestroy {
   public heros: any[] = [];
   public offset: number = 0;
-  public limit: number = 20;
+  public limit: number = 22;
   public total: number = 0;
+  public page: number = 1;
   private destroy$: Subject<void> = new Subject();
 
   constructor(private marvelService: MarvelService) {}
 
   ngOnInit(): void {
-    this.getHero();
+    this.getHeros(this.limit, this.offset);
   }
 
-  public getHero() {
+  public getHeros(__limit: number, __offset: number) {
     this.marvelService
-      .getHero$()
+      .getHeros$(__limit, __offset)
       .pipe(
         map((data: any) => {
           this.total = data.total;
@@ -40,6 +41,16 @@ export class InterviewsComponent implements OnInit, OnDestroy {
           console.log('Jai fini');
         },
       });
+  }
+
+  private changeOffset() {
+    this.offset = (this.page - 1) * this.limit;
+  }
+
+  public changePage(_page: number) {
+    this.page = _page;
+    this.changeOffset();
+    this.getHeros(this.limit, this.offset);
   }
 
   ngOnDestroy(): void {
