@@ -60,10 +60,10 @@
       </li>
       <li
         class="page-item"
-        *ngIf="page != total / limit"
-        (click)="changePage(total / limit)"
+        *ngIf="page != lastPage"
+        (click)="changePage(lastPage)"
       >
-        <a class="page-link alert-primary" href="#">{{ total / limit }}</a>
+        <a class="page-link alert-primary" href="#">{{ lastPage }}</a>
       </li>
     </ul>
   </nav>

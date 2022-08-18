@@ -13,10 +13,14 @@ import { MarvelService } from '../services/marvel.service';
 export class InterviewsComponent implements OnInit, OnDestroy {
   public heros: any[] = [];
   public offset: number = 0;
-  public limit: number = 22;
+  public limit: number = 8;
   public total: number = 0;
   public page: number = 1;
   private destroy$: Subject<void> = new Subject();
+
+  public get lastPage(): number {
+    return Math.ceil(this.total / this.limit);
+  }
 
   constructor(private marvelService: MarvelService) {}
 
@@ -50,6 +54,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   public changePage(_page: number) {
     this.page = _page;
     this.changeOffset();
+    console.log(this.page);
     this.getHeros(this.limit, this.offset);
   }
 
