@@ -11,14 +11,25 @@ import { CandidatsService } from '../services/candidats.service';
 })
 export class InterviewsComponent implements OnInit, OnDestroy {
   public candidats: Candidat[] = [];
-  private destroy$: Subject<void> = new Subject();
-  // public candidats$: Observable<any>;
 
-  constructor(private candidatsService: CandidatsService) {
-    // this.candidats$ = this.candidatsService.candidats$;
+  public offset: number = 0;
+  public limit: number = 10;
+  public total: number = 0;
+  public page: number = 1;
+
+  private destroy$: Subject<void> = new Subject();
+
+  public get lastPage(): number {
+    return Math.ceil(this.total / this.limit);
   }
 
+  constructor(private candidatsService: CandidatsService) {}
+
   ngOnInit(): void {
+    this.getCandidats;
+  }
+
+  public getCandidats() {
     this.candidatsService
       .getCandidat$()
       .pipe(
@@ -30,6 +41,16 @@ export class InterviewsComponent implements OnInit, OnDestroy {
           console.log('Jai fini');
         },
       });
+  }
+
+  private changeOffset() {
+    this.offset = (this.page - 1) * this.limit;
+  }
+
+  public changePage(_page: number) {
+    this.page = _page;
+    this.changeOffset();
+    this.getCandidats();
   }
 
   ngOnDestroy(): void {
