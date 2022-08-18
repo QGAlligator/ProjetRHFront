@@ -26,17 +26,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   constructor(private candidatsService: CandidatsService) {}
 
   ngOnInit(): void {
-    this.candidatsService
-      .getCandidat$()
-      .pipe(
-        map((candidats: Candidat[]) => (this.candidats = candidats)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        complete: () => {
-          console.log('Jai fini');
-        },
-      });
+    this.getCandidats();
   }
 
   public getCandidats() {
