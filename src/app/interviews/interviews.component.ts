@@ -10,7 +10,7 @@ import { CandidatsService } from '../services/candidats.service';
   styleUrls: ['./interviews.component.scss'],
 })
 export class InterviewsComponent implements OnInit, OnDestroy {
-  public candidats: Candidat[] = [];
+  public candidats: any[] = [];
 
   public offset: number = 0;
   public limit: number = 10;
@@ -27,13 +27,19 @@ export class InterviewsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCandidats();
+    console.log(this.limit);
   }
 
   public getCandidats() {
     this.candidatsService
-      .getCandidat$()
+      .getCandidats$()
       .pipe(
-        map((candidats: Candidat[]) => (this.candidats = candidats)),
+        map((response: any) => {
+          this.total = response.meta.total;
+          this.offset = response.meta.offset;
+          this.limit = response.meta.limit;
+          this.candidats = response.data;
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe({

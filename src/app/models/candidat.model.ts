@@ -6,3 +6,9 @@ export interface Candidat {
   desc: string;
   date: Date;
 }
+
+export interface Meta {
+  limit: number;
+  total: number;
+  offset: number;
+}
