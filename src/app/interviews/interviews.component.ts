@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { map, Subject, takeUntil } from 'rxjs';
-import { Candidat } from '../models/candidat.model';
-// import { Observable, of } from 'rxjs';
+import {} from '../models/candidat.model';
+// import { ObCandidatservable, of } from 'rxjs';
 import { CandidatsService } from '../services/candidats.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCandidats();
-    console.log(this.limit);
+    console.log(this.total);
   }
 
   public getCandidats() {
@@ -35,7 +35,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
       .getCandidats$()
       .pipe(
         map((response: any) => {
-          this.total = response.meta.total;
+          this.total = response;
           this.offset = response.meta.offset;
           this.limit = response.meta.limit;
           this.candidats = response.data;

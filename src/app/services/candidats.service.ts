@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of, Observable, map } from 'rxjs';
-import { Candidat, Meta } from '../models/candidat.model';
+import { ApiResponse, Candidat, Meta } from '../models/candidat.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -62,7 +62,7 @@ export class CandidatsService {
   //   );
   // }
 
-  public data$: Candidat[] = [
+  public candidats: Candidat[] = [
     {
       id: 1,
       name: 'Doe',
@@ -89,24 +89,22 @@ export class CandidatsService {
     },
   ];
 
-  public meta$: Meta[] = [
+  public meta: Meta[] = [
     {
       limit: 20,
-      total: this.data$.length,
+      total: this.candidats.length,
       offset: 0,
     },
   ];
 
-  public candidats$: any[] = [
-    {
-      data: this.data$,
-    },
-    {
-      meta: this.meta$,
-    },
-  ];
+  public ApiResponse$: ApiResponse = {
+    data: this.candidats,
+    meta: this.meta,
+  };
 
-  public getCandidats$(): Observable<any> {
-    return of(this.candidats$).pipe(map((response: any): any => response));
+  public getCandidats$(): Observable<ApiResponse> {
+    return of(this.ApiResponse$).pipe(
+      map((response: any): ApiResponse => response as ApiResponse)
+    );
   }
 }

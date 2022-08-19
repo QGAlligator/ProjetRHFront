@@ -12,3 +12,8 @@ export interface Meta {
   total: number;
   offset: number;
 }
+
+export interface ApiResponse {
+  data: Candidat[];
+  meta: Meta[];
+}
