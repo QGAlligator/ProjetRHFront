@@ -14,6 +14,7 @@
         </label>
         <input
           type="text"
+          [value]="candidatName"
           class="form-control"
           [class.form-invalid]="
             getControlStatus('name', ['minlength', 'maxlength', 'required'])
