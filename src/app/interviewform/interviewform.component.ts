@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'prh-interviewform',
@@ -10,15 +11,31 @@ import { Observable, Subject, takeUntil, tap } from 'rxjs';
 export class InterviewformComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject();
 
+  public interviewId: number | null = null;
+
   form?: FormGroup;
 
   public get nameControl() {
     return this.form?.get('name');
   }
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.paramMap
+      .pipe(
+        map((params: ParamMap) => {
+          console.log(params);
+          return (this.interviewId = params.get('id')
+            ? Number(params.get('id'))
+            : null);
+        }),
+        tap((id: number | null) => {
+          console.log(id);
+        })
+      )
+      .subscribe();
+
     this.initForm$()
       .pipe(
         tap((value) => console.log(this.form)),

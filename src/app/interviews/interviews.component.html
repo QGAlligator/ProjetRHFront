@@ -18,8 +18,8 @@
         <td>{{ candidat.firstname }}</td>
         <td>{{ candidat.statut }}</td>
         <td>{{ candidat.desc }}</td>
-        <td>{{ candidat.date }}</td>
-        <td>
+        <td>{{ candidat.date | date: "shortDate" }}</td>
+        <td class="text-nowrap">
           <a
             type="button"
             class="btn btn-success me-2"

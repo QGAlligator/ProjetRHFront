@@ -1,5 +1,7 @@
 <div class="container">
-  <div class="form-container">
+  <div class="form-container mt-4">
+    <h1 *ngIf="!interviewId">Création d'un Candidat</h1>
+    <h1 *ngIf="interviewId">Modification d'un Candidat</h1>
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
         <label
@@ -135,8 +137,17 @@
           type="submit"
           class="btn btn-primary me-2"
           [disabled]="!form.valid"
+          *ngIf="!interviewId"
         >
           Ajouter
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary me-2"
+          [disabled]="!form.valid"
+          *ngIf="interviewId"
+        >
+          Modifier
         </button>
         <a class="btn btn-danger" [routerLink]="['/']">Annuler</a>
       </div>
