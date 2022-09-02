@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { map, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import {} from '../models/candidat.model';
 // import { ObCandidatservable, of } from 'rxjs';
 import { CandidatsService } from '../services/candidats.service';
@@ -26,37 +26,35 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   constructor(private candidatsService: CandidatsService) {}
 
   ngOnInit(): void {
-    this.getCandidats();
-    console.log(this.total);
+    this.getCandidats$().subscribe();
   }
 
-  public getCandidats() {
-    this.candidatsService
-      .getCandidats$()
-      .pipe(
-        map((response: any) => {
-          this.total = response;
-          this.offset = response.meta.offset;
-          this.limit = response.meta.limit;
-          this.candidats = response.data;
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        complete: () => {
-          console.log('Jai fini');
-        },
-      });
-  }
-
-  private changeOffset() {
-    this.offset = (this.page - 1) * this.limit;
+  public getCandidats$(): Observable<void> {
+    return this.candidatsService.getCandidats$().pipe(
+      map((response: any) => {
+        this.total = response;
+        this.offset = response.meta.offset;
+        this.limit = response.meta.limit;
+        this.candidats = response.data;
+      })
+    );
   }
 
   public changePage(_page: number) {
     this.page = _page;
     this.changeOffset();
-    this.getCandidats();
+    this.getCandidats$();
+  }
+
+  public deleteCandidat(id: number): void {
+    this.candidatsService
+      .deleteCandidat$(id)
+      .pipe(switchMap(this.getCandidats$.bind(this)))
+      .subscribe();
+  }
+
+  private changeOffset() {
+    this.offset = (this.page - 1) * this.limit;
   }
 
   ngOnDestroy(): void {

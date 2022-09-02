@@ -1,7 +1,7 @@
 <div class="container">
   <div class="form-container mt-4">
-    <h1 *ngIf="!interviewId">Création d'un Candidat</h1>
-    <h1 *ngIf="interviewId">Modification d'un Candidat</h1>
+    <h1>{{ candidatId ? "Modifcation" : "Création" }} d'un Candidat</h1>
+
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
         <label
@@ -14,7 +14,6 @@
         </label>
         <input
           type="text"
-          [value]="candidatName"
           class="form-control"
           [class.form-invalid]="
             getControlStatus('name', ['minlength', 'maxlength', 'required'])
@@ -95,9 +94,9 @@
           aria-label="Default select example"
           formControlName="statut"
         >
-          <option value="EC">En Cours</option>
-          <option value="RP">Réponse Positive</option>
-          <option value="RN">Réponse Négative</option>
+          <option value="En Cours">En Cours</option>
+          <option value="Réponse Positive">Réponse Positive</option>
+          <option value="Réponse Négative">Réponse Négative</option>
         </select>
       </div>
       <div class="mb-3">
@@ -138,17 +137,8 @@
           type="submit"
           class="btn btn-primary me-2"
           [disabled]="!form.valid"
-          *ngIf="!interviewId"
         >
-          Ajouter
-        </button>
-        <button
-          type="submit"
-          class="btn btn-primary me-2"
-          [disabled]="!form.valid"
-          *ngIf="interviewId"
-        >
-          Modifier
+          {{ candidatId ? "Modifier" : "Ajouter" }}
         </button>
         <a class="btn btn-danger" [routerLink]="['/']">Annuler</a>
       </div>

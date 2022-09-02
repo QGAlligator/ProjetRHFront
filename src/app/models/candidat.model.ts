@@ -4,7 +4,7 @@ export interface Candidat {
   firstname: string;
   statut: string;
   desc: string;
-  date: Date;
+  date: string;
 }
 
 export interface Meta {
@@ -15,5 +15,5 @@ export interface Meta {
 
 export interface ApiResponse {
   data: Candidat[];
-  meta: Meta[];
+  meta: Meta;
 }

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Candidat } from '../models/candidat.model';
 import { CandidatsService } from '../services/candidats.service';
 
 @Component({
@@ -11,16 +12,10 @@ import { CandidatsService } from '../services/candidats.service';
 })
 export class InterviewformComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject();
+  private candidat?: Candidat;
 
-  public interviewId: number | null = null;
-
-  public candidatName: string | null = null;
-  public candidatFirstName: string | null = null;
-  public candidatStatut: string | null = null;
-  public candidatDesc: string | null = null;
-  public candidatDate: Date | null = null;
-
-  form?: FormGroup;
+  public candidatId: number | null = null;
+  public form?: FormGroup;
 
   public get nameControl() {
     return this.form?.get('name');
@@ -32,52 +27,30 @@ export class InterviewformComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap
+    this.getParams$()
       .pipe(
-        map((params: ParamMap) => {
-          console.log(params);
-          return (this.interviewId = params.get('id')
-            ? Number(params.get('id'))
-            : null);
-        }),
-        tap((id: number | null) => {
-          console.log(id);
-        })
-      )
-      .subscribe();
-
-    if (this.interviewId) {
-      this.getCandidatsById$(this.interviewId);
-    }
-
-    this.initForm$()
-      .pipe(
-        tap((value) => console.log(this.form)),
+        switchMap(() => this.getCandidats$()),
+        tap(() => this.initForm$()),
         takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
-  public getCandidatsById$(__id: number) {
-    this.candidatsService
-      .getCandidatsById$(__id)
-      .pipe(
-        map((response: any) => {
-          this.candidatName = response.name;
-          this.candidatFirstName = response.firstname;
-          this.candidatStatut = response.statut;
-          this.candidatDesc = response.desc;
-          this.candidatDate = response.date;
-          console.log(response);
-          console.log(this.candidatDate);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        complete: () => {
-          console.log('Jai fini');
-        },
-      });
+  private getParams$(): Observable<number | null> {
+    return this.route.paramMap.pipe(
+      map((params: ParamMap) => {
+        console.log(params);
+        return (this.candidatId = params.get('id')
+          ? Number(params.get('id'))
+          : null);
+      })
+    );
+  }
+
+  private getCandidats$(): Observable<Candidat> {
+    return this.candidatsService
+      .getCandidatsById$(this.candidatId as number)
+      .pipe(map((candidat: Candidat) => (this.candidat = candidat)));
   }
 
   public getControlStatus(controlName: string, errorName: string[]): boolean {
@@ -102,39 +75,25 @@ export class InterviewformComponent implements OnInit, OnDestroy {
   }
 
   private initForm$(): Observable<any> {
-    if (this.interviewId) {
-      this.form = new FormGroup({
-        name: new FormControl(this.candidatName, [
-          Validators.required,
-          Validators.maxLength(30),
-          Validators.minLength(2),
-        ]),
-        firstName: new FormControl(this.candidatFirstName, [
-          Validators.required,
-          Validators.maxLength(30),
-          Validators.minLength(2),
-        ]),
-        statut: new FormControl('', [Validators.required]),
-        desc: new FormControl(this.candidatDesc, [Validators.maxLength(4000)]),
-        date: new FormControl('', [Validators.required]),
-      });
-    } else {
-      this.form = new FormGroup({
-        name: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(30),
-          Validators.minLength(2),
-        ]),
-        firstName: new FormControl('', [
-          Validators.required,
-          Validators.maxLength(30),
-          Validators.minLength(2),
-        ]),
-        statut: new FormControl('', [Validators.required]),
-        desc: new FormControl('', [Validators.maxLength(4000)]),
-        date: new FormControl('', [Validators.required]),
-      });
-    }
+    this.form = new FormGroup({
+      name: new FormControl(this.candidat?.name || '', [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.minLength(2),
+      ]),
+      firstName: new FormControl(this.candidat?.firstname || '', [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.minLength(2),
+      ]),
+      statut: new FormControl(this.candidat?.statut || '', [
+        Validators.required,
+      ]),
+      desc: new FormControl(this.candidat?.desc || '', [
+        Validators.maxLength(4000),
+      ]),
+      date: new FormControl(this.candidat?.date || '', [Validators.required]),
+    });
     return this.form.valueChanges;
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of, Observable, map } from 'rxjs';
+import { of, Observable, map, take } from 'rxjs';
 import { ApiResponse, Candidat, Meta } from '../models/candidat.model';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,7 +14,7 @@ export class CandidatsService {
       firstname: 'John',
       statut: 'En Cours',
       desc: 'A compléter',
-      date: new Date('09-26-2022'),
+      date: '2022-09-26',
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ export class CandidatsService {
       firstname: 'Toto',
       statut: 'Réponse Positive',
       desc: 'Sérieux, aimable et curieux',
-      date: new Date('01-14-2021'),
+      date: '2021-01-14',
     },
     {
       id: 3,
@@ -30,36 +30,39 @@ export class CandidatsService {
       firstname: 'Pablo',
       statut: 'Réponse Négative',
       desc: "Arrive en retard et n'est pas très poli",
-      date: new Date('12-08-2020'),
+      date: '2020-08-12',
     },
   ];
-
-  public meta: Meta[] = [
-    {
-      limit: 20,
-      total: this.candidats.length,
-      offset: 0,
-    },
-  ];
-
-  public ApiResponse$: ApiResponse = {
-    data: this.candidats,
-    meta: this.meta,
-  };
 
   public getCandidats$(): Observable<ApiResponse> {
-    return of(this.ApiResponse$).pipe(
-      map((response: any): ApiResponse => response as ApiResponse)
+    return of(this.candidats).pipe(
+      map((response: any): ApiResponse => {
+        return {
+          data: this.candidats,
+          meta: {
+            limit: 2,
+            total: this.candidats.length,
+            offset: 0,
+          },
+        } as ApiResponse;
+      }),
+      take(1) // Pour simuler le désabonnement automatique de l'observable
     );
   }
 
-  public getCandidatsById$(_id: number): Observable<Candidat> {
-    let index = 0;
-    while (_id != this.candidats[index].id) {
-      index++;
-    }
-    return of(this.candidats[index]).pipe(
-      map((response: any): Candidat => response as Candidat)
+  public getCandidatsById$(id: number): Observable<Candidat> {
+    const candidat: Candidat | undefined = this.candidats.find(
+      (candidat: Candidat): boolean => candidat.id === id
     );
+
+    return of(candidat || ({} as Candidat)).pipe(take(1));
+  }
+
+  public deleteCandidat$(id: number): Observable<number> {
+    this.candidats = this.candidats.filter(
+      (candidat: Candidat): boolean => candidat.id !== id
+    );
+
+    return of(id).pipe(take(1));
   }
 }
