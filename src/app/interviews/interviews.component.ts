@@ -38,7 +38,6 @@ export class InterviewsComponent implements OnInit, OnDestroy {
         this.offset = response.meta.offset;
         this.limit = response.meta.limit;
         this.candidats = response.data;
-        console.log(this.limit);
       })
     );
   }
@@ -55,6 +54,14 @@ export class InterviewsComponent implements OnInit, OnDestroy {
       .deleteCandidat$(id)
       .pipe(switchMap(this.getCandidats$.bind(this)))
       .subscribe();
+    this.changeCandidat();
+    if ((this.showcandidats = [])) {
+      if (this.page > 1) {
+        this.changePage(this.page - 1);
+      } else {
+        this.changePage(1);
+      }
+    }
   }
 
   private changeCandidat(): void {
