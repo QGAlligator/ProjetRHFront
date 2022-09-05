@@ -40,7 +40,7 @@ export class CandidatsService {
         return {
           data: this.candidats,
           meta: {
-            limit: 2,
+            limit: 1,
             total: this.candidats.length,
             offset: 0,
           },
