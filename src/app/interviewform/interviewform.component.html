@@ -39,10 +39,10 @@
       </div>
       <div class="mb-3">
         <label
-          for="candidatFirstName"
+          for="candidatFirstname"
           class="form-label"
           [class.text-danger]="
-            getControlStatus('firstName', [
+            getControlStatus('firstname', [
               'minlength',
               'maxlength',
               'required'
@@ -54,29 +54,29 @@
           type="text"
           class="form-control"
           [class.form-invalid]="
-            getControlStatus('firstName', [
+            getControlStatus('firstname', [
               'minlength',
               'maxlength',
               'required'
             ])
           "
-          id="candidatFirstName"
+          id="candidatFirstname"
           placeholder="John"
-          formControlName="firstName"
+          formControlName="firstname"
         />
         <small
-          *ngIf="getControlStatus('firstName', ['minlength'])"
+          *ngIf="getControlStatus('firstname', ['minlength'])"
           class="text-danger"
           >Le prénom doit faire minimum
-          {{form.get('firstName')?.errors?.['minlength'].requiredLength}}
+          {{form.get('firstname')?.errors?.['minlength'].requiredLength}}
           caractères.</small
         >
         <small
-          *ngIf="getControlStatus('firstName', ['maxlength'])"
+          *ngIf="getControlStatus('firstname', ['maxlength'])"
           class="text-danger"
           >Le prénom doit faire maximum
-          {{form.get('firstName')?.errors?.['maxlength'].requiredLength}}
-          caractères. ({{form.get('firstName')?.errors?.['maxlength'].actualLength}}
+          {{form.get('firstname')?.errors?.['maxlength'].requiredLength}}
+          caractères. ({{form.get('firstname')?.errors?.['maxlength'].actualLength}}
           )
         </small>
       </div>

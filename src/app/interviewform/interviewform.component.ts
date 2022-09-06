@@ -72,9 +72,20 @@ export class InterviewformComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     this.candidat = this.form?.value as Candidat;
+
+    // Création
     if (!this.candidatId) {
       this.candidatsService
         .addCandidat$(this.candidat)
+        .pipe(
+          tap(() => {
+            this.router.navigate(['/']);
+          })
+        )
+        .subscribe();
+    } else {
+      this.candidatsService
+        .modifCandidat$(this.candidatId, this.candidat)
         .pipe(
           tap(() => {
             this.router.navigate(['/']);
@@ -91,7 +102,7 @@ export class InterviewformComponent implements OnInit, OnDestroy {
         Validators.maxLength(30),
         Validators.minLength(2),
       ]),
-      firstName: new FormControl(this.candidat?.firstname || '', [
+      firstname: new FormControl(this.candidat?.firstname || '', [
         Validators.required,
         Validators.maxLength(30),
         Validators.minLength(2),

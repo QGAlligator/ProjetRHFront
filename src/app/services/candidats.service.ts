@@ -78,4 +78,13 @@ export class CandidatsService {
 
     return of(candidat).pipe(take(1));
   }
+
+  public modifCandidat$(id: number, candidat: Candidat): Observable<Candidat> {
+    const index = this.candidats.findIndex(
+      (candidat: Candidat): boolean => candidat.id === id
+    );
+    this.candidats[index] = { ...candidat, id };
+
+    return of(candidat).pipe(take(1));
+  }
 }
