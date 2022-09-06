@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { Candidat } from '../models/candidat.model';
 import { CandidatsService } from '../services/candidats.service';
@@ -23,14 +23,15 @@ export class InterviewformComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private candidatsService: CandidatsService
+    private candidatsService: CandidatsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getParams$()
       .pipe(
         switchMap(() => this.getCandidats$()),
-        tap(() => this.initForm$()),
+        tap(() => this.initForm()),
         takeUntil(this.destroy$)
       )
       .subscribe();
@@ -70,11 +71,20 @@ export class InterviewformComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    console.log('form >>>', this.form);
-    console.log('isValid >>>', this.form?.valid);
+    this.candidat = this.form?.value as Candidat;
+    if (!this.candidatId) {
+      this.candidatsService
+        .addCandidat$(this.candidat)
+        .pipe(
+          tap(() => {
+            this.router.navigate(['/']);
+          })
+        )
+        .subscribe();
+    }
   }
 
-  private initForm$(): Observable<any> {
+  private initForm(): void {
     this.form = new FormGroup({
       name: new FormControl(this.candidat?.name || '', [
         Validators.required,
@@ -94,7 +104,6 @@ export class InterviewformComponent implements OnInit, OnDestroy {
       ]),
       date: new FormControl(this.candidat?.date || '', [Validators.required]),
     });
-    return this.form.valueChanges;
   }
 
   ngOnDestroy(): void {

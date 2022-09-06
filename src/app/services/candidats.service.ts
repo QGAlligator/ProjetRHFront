@@ -34,13 +34,19 @@ export class CandidatsService {
     },
   ];
 
+  public static randomId(length = 10): number {
+    return Math.floor(Math.random() * Math.pow(10, length));
+  }
+
+  constructor() {}
+
   public getCandidats$(): Observable<ApiResponse> {
     return of(this.candidats).pipe(
       map((response: any): ApiResponse => {
         return {
           data: this.candidats,
           meta: {
-            limit: 1,
+            limit: 2,
             total: this.candidats.length,
             offset: 0,
           },
@@ -64,5 +70,12 @@ export class CandidatsService {
     );
 
     return of(id).pipe(take(1));
+  }
+
+  public addCandidat$(candidat: Candidat): Observable<Candidat> {
+    candidat.id = CandidatsService.randomId();
+    this.candidats.push(candidat);
+
+    return of(candidat).pipe(take(1));
   }
 }
