@@ -11,7 +11,6 @@ import { CandidatsService } from '../services/candidats.service';
 })
 export class InterviewsComponent implements OnInit, OnDestroy {
   public candidats: Candidat[] = [];
-  public showcandidats: Candidat[] = [];
 
   public offset: number = 0;
   public limit: number = 10;
@@ -28,16 +27,18 @@ export class InterviewsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCandidats$().subscribe();
-    this.changeCandidat();
   }
 
   public getCandidats$(): Observable<void> {
     return this.candidatsService.getCandidats$().pipe(
       map((response: any) => {
         this.total = response.meta.total;
-        this.offset = response.meta.offset;
+        this.offset = response.meta.offset + this.offset;
         this.limit = response.meta.limit;
-        this.candidats = response.data;
+        this.candidats = response.data.slice(
+          this.offset,
+          this.offset + this.limit
+        );
       })
     );
   }
@@ -45,8 +46,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   public changePage(_page: number): void {
     this.page = _page;
     this.changeOffset();
-    this.getCandidats$();
-    this.changeCandidat();
+    this.getCandidats$().subscribe();
   }
 
   public deleteCandidat(id: number): void {
@@ -54,21 +54,11 @@ export class InterviewsComponent implements OnInit, OnDestroy {
       .deleteCandidat$(id)
       .pipe(switchMap(this.getCandidats$.bind(this)))
       .subscribe();
-    this.changeCandidat();
-    if ((this.showcandidats = [])) {
+    if ((this.candidats = [])) {
       if (this.page > 1) {
         this.changePage(this.page - 1);
       } else {
         this.changePage(1);
-      }
-    }
-  }
-
-  private changeCandidat(): void {
-    this.showcandidats = [];
-    for (let i = this.offset; i < this.offset + this.limit; i = i + 1) {
-      if (this.candidats[i] != null) {
-        this.showcandidats.push(this.candidats[i]);
       }
     }
   }
