@@ -13,7 +13,7 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   public candidats: Candidat[] = [];
 
   public offset: number = 0;
-  public limit: number = 10;
+  public limit: number = 5;
   public total: number = 0;
   public page: number = 1;
 
@@ -30,15 +30,12 @@ export class InterviewsComponent implements OnInit, OnDestroy {
   }
 
   public getCandidats$(): Observable<void> {
-    return this.candidatsService.getCandidats$().pipe(
+    return this.candidatsService.getCandidats$(this.offset, this.limit).pipe(
       map((response: any) => {
         this.total = response.meta.total;
-        this.offset = response.meta.offset + this.offset;
+        this.offset = response.meta.offset;
         this.limit = response.meta.limit;
-        this.candidats = response.data.slice(
-          this.offset,
-          this.offset + this.limit
-        );
+        this.candidats = response.data;
       })
     );
   }

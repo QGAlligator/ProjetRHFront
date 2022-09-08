@@ -64,15 +64,18 @@ export class CandidatsService {
 
   constructor() {}
 
-  public getCandidats$(): Observable<ApiResponse> {
+  public getCandidats$(
+    offset: number = 0,
+    limit: number = 10
+  ): Observable<ApiResponse> {
     return of(this.candidats).pipe(
       map((response: any): ApiResponse => {
         return {
-          data: this.candidats,
+          data: this.candidats.slice(offset, limit + offset),
           meta: {
-            limit: 5,
+            limit,
             total: this.candidats.length,
-            offset: 0,
+            offset,
           },
         } as ApiResponse;
       }),
