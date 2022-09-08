@@ -32,6 +32,30 @@ export class CandidatsService {
       desc: "Arrive en retard et n'est pas très poli",
       date: '2020-08-12',
     },
+    {
+      id: 4,
+      name: 'Hola',
+      firstname: 'Quetal',
+      statut: 'En Cours',
+      desc: 'A compléter',
+      date: '2022-09-26',
+    },
+    {
+      id: 5,
+      name: 'Incognito',
+      firstname: 'Patron',
+      statut: 'Réponse Positive',
+      desc: 'Sérieux, aimable et curieux',
+      date: '2021-01-14',
+    },
+    {
+      id: 6,
+      name: 'Test',
+      firstname: 'Test',
+      statut: 'Réponse Négative',
+      desc: "Arrive en retard et n'est pas très poli",
+      date: '2020-08-12',
+    },
   ];
 
   public static randomId(length = 10): number {
@@ -46,7 +70,7 @@ export class CandidatsService {
         return {
           data: this.candidats,
           meta: {
-            limit: 2,
+            limit: 5,
             total: this.candidats.length,
             offset: 0,
           },
